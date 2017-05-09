@@ -1,0 +1,210 @@
+#container{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    height:100%;
+    background-color: steelblue;
+}
+
+#header-website{
+    display:flex;
+    justify-content: space-between;   
+    height:100%;
+    width:100%;
+    background: rebeccapurple;
+}
+
+#header-website img{
+    height: 100%;
+    width:100px;
+}
+
+.menu{
+    display:flex;
+}
+
+.submenu {
+    width:100px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blue{
+    background: dodgerblue;
+}
+
+.purple{
+    background: mediumpurple;
+}
+ .submenu a{
+	text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+ .submenu:hover{
+     background: mediumvioletred;
+}
+
+#body-website{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 50vw;
+    height: 100%;
+    width: 100%;
+}
+
+#body-website>p{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:30px;
+    color: white;
+}
+
+#body-website>p:first-child{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:60px;
+    color: white;
+}
+
+
+
+/*Fieldset from login*/
+fieldset{
+    border: 2px solid pink;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    color:black;
+}
+
+#user-files-list{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width:100%;
+}
+.block-name{
+    display:flex;
+    justify-content: space-between;
+}
+
+.block-name p {
+    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:purple;
+}
+
+.file-block{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+    color: darkred;
+    font-size: 1.5vw;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: skyblue;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#user-directories-list{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width:100%;
+
+}
+
+.directory-block{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+    color: darkred;
+    font-size: 1.5vw;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: skyblue;
+}
+
+.directory-content{
+max-height: 8vw;
+max-width: 30vw;
+overflow: scroll;
+border: 1px solid rebeccapurple;
+}
+
+.directory-content ul li.fil{
+list-style:none;
+list-style-image: url(file-icon.png);
+}
+
+.directory-content ul li.dir{
+list-style:none;
+list-style-image: url(folder-icon.png);
+}
+
+#edit-block {
+    display:flex;
+    justify-content: center;
+    align-content: center; 
+    width:80%;
+}
+
+#edit-block textarea{
+    margin-top:20px;
+    width:60vw;
+    height:10vw;
+}
+
+/*MODAL STYLE most took from w3school*/
+/* The Modal (background) */
+.modal {
+    display: flex;
+    align-items: center;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    display: flex;
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.modal-content img{
+    max-height: 30vw;
+    max-width: 30vw;
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
