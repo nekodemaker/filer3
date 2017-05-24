@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<div id="body-website">
+        <p>Please Log in
+          <p>
+            <div id="message">
+              {% if error is defined and not empty %}{{error}}{% endif %}
+            </div>
+            <form method='post' action='?action=login'>
+              <fieldset>
+                <legend>Log in</legend>
+                <label for='username'>Username: </label>
+                <input type='text' name='username' id='username' required>
+                <br/>
+                <label for='passw'>Password: </label>
+                <input type='password' name='passw' id='passw' required>
+                <br/>
+                <input type='submit' value='log in'>
+              </fieldset>
+            </form>
+      </div>
+{% endblock %}

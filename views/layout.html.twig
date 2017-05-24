@@ -3,30 +3,33 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Projet Filer</title>
-  <link rel="stylesheet" href="assets/style2.css">
+  <title>Projet Filer-register</title>
+  <link rel="stylesheet" href="web/style2.css">
 </head>
 
 <body>
   <div id="container">
     <div id="header-website">
-      <a href="index.php">
-        <img src="assets/logo.jpg" alt="">
+      <a href="index.php?action=home">
+        <img src="web/logo.jpg" alt="">
       </a>
       <div class="menu">
+      {% if username is empty %}
         <div class="submenu purple">
           <a href="index.php?action=login">Sign in</a>
         </div>
         <div class="submenu blue">
           <a href="index.php?action=register">Register</a>
         </div>
+      {% else %}
+        <div class="submenu purple">
+          <a href="index.php?action=logout">Logout</a>
+        </div>
+      {% endif %}
       </div>
     </div>
-    <div id="body-website">
-      <p>Welcome here ! Its a Filer website V2</p>
-      <p>You can upload files, rename, replace, delete, move and download</p>
-      <p>You can create directories, rename, move, delete</p>
-    </div>
+        {% block content %}{% endblock %}>
   </div>
 </body>
+
 </html>

@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div id="body-website">
+      {% if username is empty %}
+      <p>Welcome here ! Its a Filer website V2</p>
+      <p>You can upload files, rename, replace, delete, move and download</p>
+      <p>You can create directories, rename, move, delete</p>
+      {% else %}
+        <p> Bienvenu {{username}} !</p>
+    {% endif %}
+    </div>
+{% endblock %}
