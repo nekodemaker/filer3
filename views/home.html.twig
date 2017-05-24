@@ -7,7 +7,37 @@
       <p>You can upload files, rename, replace, delete, move and download</p>
       <p>You can create directories, rename, move, delete</p>
       {% else %}
-        <p> Bienvenu {{username}} !</p>
+        {# HOME USER CONNECTED #}
+        <p class="welcome-para">
+            Welcome {{username}}
+        </p>
+      <div id="warning-block">
+        {# <?php errors_file(); ?> #}
+      </div>
+      <div id="message">
+        {#<?php good_messages(); ?>#}
+      </div>
+      <form id="form-upload" method="post" enctype="multipart/form-data" action="?action=upload">
+        <input type="hidden" name="MAX_FILE_SIZE" value="1000000000" /> Choose a file to upload, you can upload a same file name with a different extension
+        <input type="file" id="myFile" name="monfichier" />
+        <input type="submit" class="bof" value="upload" />
+      </form>
+      <div id="edit-block">
+        {#<?php edit_appear();?>#}
+        {#<?php visualize_appear();?>#}
+      </div>
+      <div id="user-files-list">
+        {#<?php display_all_user_files();?>#}
+      </div>
+      <form method="post" action="?action=createNewFolder">
+        <label for="new-d">Create a new directory</label>
+        <input type="text" id="new-d" name="new_directory" />
+        <input type="submit" class="bof" value="Create new directory" />
+      </form>
+      <div id="user-directories-list">
+        {#<?php display_all_user_directories();?>#}
+      </div>
+
     {% endif %}
     </div>
 {% endblock %}
