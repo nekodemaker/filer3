@@ -10,6 +10,12 @@ routes:
     rename: 'File:rename'
     replace: 'File:replace'
     download: 'File:download'
+    createNewFolder: 'Directory:createNewFolder'
+    createDirectory: 'Directory:createDirectory'
+    deleteDirectory: 'Directory:deleteDirectory'
+    renameDirectory: 'Directory:renameDirectory'
+    moveDirectory: 'Directory:moveDirectory'
+
 defaut_route: 'home'
 db_config:
     name: 'filer'

@@ -59,7 +59,6 @@
               {#put_button_visualize($row['file_url']);#}
               </div></div>
           {% endfor %}
-        </div>
       </div>
       <form method="post" action="?action=createNewFolder">
         <label for="new-d">Create a new directory</label>
@@ -68,6 +67,26 @@
       </form>
       <div id="user-directories-list">
         {#<?php display_all_user_directories();?>#}
+        <div class="block-name">
+          <p>Directory name</p><p>URL</p><p>Directory content</p><p>Actions</p>
+        </div>
+        {% for directory in allDirectories %}
+            <div class="directory-block">
+            <div class="directory-name">{{directory['directory_name']}}</div>
+            <div class="directory-url">{{directory['directory_url']}}</div>
+            <div class="directory-content">{#'.get_directory_content($row['directory_url']).'#}</div>
+            <div class="buttons-dir"><div class="rename-block-dir"><div hidden class="url-parent">{{directory['parent_url']}}</div><input type="button" class="rename-directory" value="Rename Directory"></div>
+            <div class="create-block-dir"><input type="button" class="create-directory" value="Create Directory"></div>
+            <form method="post" action="?action=deleteDirectory">
+            <input type="hidden" name="directory-name" value={{directory['directory_name']}}>
+            <input type="hidden" name="url-directory" value={{directory['directory_url']}}>
+            <input type="submit" name="delete-directory" value="Delete Directory">
+            </form>
+            <div hidden class="list-directories-dir">{#'.multiple_choice_list_html("d",$row['directory_url']).'#}</div>
+            <div class="move-directory-block"><input type="button" class="move-directory" value="Move Directory"></div>
+            </div>
+            </div>
+        {% endfor %}
       </div>
       <script src="web/script4.js"></script>
     {% endif %}
