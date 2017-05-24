@@ -29,14 +29,19 @@ class UserManager
     function is_mail_already_exist($mail){
         $data = $this->DBManager->findAllSecure("select * from `user` where `email`= :mail",
         ['mail' => $mail]);
-        return (count($data) != 0);
+        if($data == false){
+            return false;
+        }else{
+            return true;
+        }
+        
     }
     
     //Function which takes $data(eventually $_POST) and returns true if data entries correspond in the database
     function user_check_register($data){
         if (empty($data['username']) OR empty($data['firstname']) OR empty($data['lastname']) OR empty($data['passw']) OR empty($data['mail']))
             return 1;
-        if(count($this->get_user_by_username($data['username']))!=0){
+        if($this->get_user_by_username($data['username'])==true){
             return 2;
         }
         if($this->is_mail_already_exist($data['mail'])){

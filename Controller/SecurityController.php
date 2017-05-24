@@ -68,7 +68,7 @@ function logoutAction()
                 else if($check===1){
                     $error = "At least one of the fields is empty";
                 }else if($check===2){
-                    $error = "The username adress already exists, choose another one";
+                    $error = "The username already exists, choose another one";
                 }else{
                     $error = "The mail already exists, choose another one";
                 }
