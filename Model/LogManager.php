@@ -29,6 +29,15 @@ class LogManager
     }
     /*function which returns 1 if the string contains special characters like <,>,= and ; */
     function test_special_char($word){
-    return (preg_match('/[\'^£$%&*()}{#~?>
-  <>,|=+¬]/',$word)); } /*function which returns true if the url begins by ./uploads/"username"/ */ function test_path($url,$username){ $strUrl="./uploads/".$username."/" ; $urlLen=strlen($strUrl); if(strncmp ($strUrl,$url, $urlLen )==0) { return true;
-    } else{ return false; } } }
+    return (preg_match('/[\'^£$%&*()}{#~?><>,|=+¬]/',$word)); 
+    } 
+    
+    /*function which returns true if the url begins by ./uploads/"username"/ */
+     function test_path($url,$username){ 
+         $strUrl="./uploads/".$username."/" ; 
+         $urlLen=strlen($strUrl); 
+         if(strncmp ($strUrl,$url, $urlLen )==0) { 
+             return true;
+            } else{ return false; } } 
+            
+}

@@ -35,6 +35,70 @@ class FileManager
         }
     }
     
+    /*function called by controller delete_action, which deletes a file */
+    function delete_file($fileUrl){
+        if(file_exists($fileUrl)){
+            $q="delete from `file` where `user_id`= :userid and `file_url`= :fileurl ";
+            $this->DBManager->do_query_db($q,[
+            'userid'=> $_SESSION['id'],
+            'fileurl'=> $fileUrl,
+            ]);
+            unlink($fileUrl);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    //function called by controller rename_action, renames the file, if a file with that new name already exists,just puts an error message
+    function rename_file($newFileUrl,$oldFileUrl){
+        if(!file_exists($newFileUrl)){
+            $q="update `file` set `file_name`= :filename , `file_url`= :fileurl where `user_id`= :userid and `file_url`= :oldfileurl";
+            $this->DBManager->do_query_db($q,[
+            'filename'=> basename($newFileUrl),
+            'fileurl' => $newFileUrl,
+            'userid'=> $_SESSION['id'],
+            'oldfileurl'=>$oldFileUrl,
+            ]);
+            rename($oldFileUrl, $newFileUrl);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /*function called by controller replace_action, which replaces a file */
+    function replace_file($actualFileUrl,$newFileName){
+        $parentUrl=dirname($actualFileUrl)."/";
+        if($this->user_upload($_FILES,$newFileName,$parentUrl.$newFileName)) {
+            $this->delete_file($actualFileUrl);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /*function called by controller download_action, which download a file */
+    function download_file($fileUrl){
+        /*That code is taken from php.net*/
+        if (file_exists($fileUrl)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($fileUrl).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($fileUrl));
+            readfile($fileUrl);
+            exit;
+        }else{
+            return false;
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
     /*function which returns all user files from id*/
     function get_all_files_by_id($id){
         $q="select * from `file` where `user_id`= :userid";

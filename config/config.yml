@@ -6,6 +6,10 @@ routes:
     login: 'Security:login'
     logout: 'Security:logout'
     upload: 'File:upload'
+    delete: 'File:delete'
+    rename: 'File:rename'
+    replace: 'File:replace'
+    download: 'File:download'
 defaut_route: 'home'
 db_config:
     name: 'filer'
