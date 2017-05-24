@@ -3,7 +3,8 @@
 {% block content %}
     <div id="body-website">
       {% if username is empty %}
-      <p>Welcome here ! Its a Filer website V2</p>
+      {# HOME USER NOT CONNECTED #}
+      <p>Welcome here ! Its a Filer website V3</p>
       <p>You can upload files, rename, replace, delete, move and download</p>
       <p>You can create directories, rename, move, delete</p>
       {% else %}
@@ -12,10 +13,16 @@
             Welcome {{username}}
         </p>
       <div id="warning-block">
-        {# <?php errors_file(); ?> #}
+        {% if error is defined and not empty%}
+           <p>{{error}}</p>
+           {% set error="" %}
+        {% endif %}
       </div>
       <div id="message">
-        {#<?php good_messages(); ?>#}
+        {% if message is defined and not empty%}
+           <p>{{message}}</p>
+           {% set message="" %}
+        {% endif %}
       </div>
       <form id="form-upload" method="post" enctype="multipart/form-data" action="?action=upload">
         <input type="hidden" name="MAX_FILE_SIZE" value="1000000000" /> Choose a file to upload, you can upload a same file name with a different extension
@@ -28,6 +35,31 @@
       </div>
       <div id="user-files-list">
         {#<?php display_all_user_files();?>#}
+        <div class="block-name">
+          <p>File name</p><p>Url</p><p>Date of creation</p><p>Actions</p></div>
+          {% for file in allFiles %}
+            <div class="file-block">
+              <div class="file-name">{{file['file_name']}}</div>
+              <div class="file-url">{{file['file_url']}}</div>
+              <div class="file-date-creation">{{file['date_creation']}}</div>
+              <div class="buttons"><div class="rename-block"><input type="button" class="rename-file" value="Rename File"></div>
+              <form method="post" action="?action=delete">
+                  <input type="hidden" name="file-url" value={{file['file_url']}}>
+                  <input type="submit" name="delete-file" value="Delete File">'
+              </form>
+              <div class="replace-block"><input type="button" class="replace-file" value="Replace File"></div>
+              <form method="post" action="?action=download">
+                  <input type="hidden" name="url-file" value={{file['file_url']}}>
+                  <input type="hidden" name="name-user" value={{username}}>
+                  <input type="submit" name="download-file" value="Download File">
+              </form>
+              <div hidden class="list-directories">{#'.multiple_choice_list_html("f","").'#}</div>
+              <div class="move-file-block"><input type="button" class="move-file" value="Move File"></div>
+              {#put_button_edit($row['file_url']);#}
+              {#put_button_visualize($row['file_url']);#}
+              </div></div>
+          {% endfor %}
+        </div>
       </div>
       <form method="post" action="?action=createNewFolder">
         <label for="new-d">Create a new directory</label>
@@ -37,7 +69,7 @@
       <div id="user-directories-list">
         {#<?php display_all_user_directories();?>#}
       </div>
-
+      <script src="web/script4.js"></script>
     {% endif %}
     </div>
 {% endblock %}
