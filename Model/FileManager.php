@@ -91,6 +91,17 @@ class FileManager
         }else{
             return false;
         }
+        
+        /*function called by controller moveDirectory_action, which moves a  directory into another directory*/
+        function move_directory($directoryUrl,$directoryUrlDestination){
+            if(file_exists($directoryUrlDestination."/".basename($directoryUrl))){
+                return false;
+            }else{
+                $this->rename_directory_rec($directoryUrl,$directoryUrlDestination."/".basename($directoryUrl));
+                rename($directoryUrl,$directoryUrlDestination."/".basename($directoryUrl));
+                return true;
+            }
+        }
     }
     
     

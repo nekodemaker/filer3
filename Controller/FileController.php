@@ -132,4 +132,26 @@ class FileController extends BaseController
         }
         $this->redirect('home');
     }
+
+    function moveFileAction(){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST')
+    {
+            $fileManager = FileManager::getInstance();
+            $logManager = LogManager::getInstance();
+        if(!$logManager->test_path($_POST['url-file'],$_SESSION['username'])||!$logManager->test_path($_POST['directory-choice'],$_SESSION['username'])){
+            $logManager->log_security($_SESSION['username'],"modified url file by: ".$_POST['url-file']);
+        }elseif(($logManager->test_special_char($_POST['url-file'])==1)||($logManager->test_special_char($_POST['directory-choice'])==1)){
+            $logManager->log_security($_SESSION['username'],"put dangerous characters on move file action");
+        }else{
+            if($fileManager->move_file($_POST['url-file'],$_POST['directory-choice'])){
+                $logManager->log_access($_SESSION['username'],"moved file ".$_POST['url-file']." into ".$_POST['directory-choice']);
+                $_SESSION['message']="Your file is".$_POST['url-file']." and directory ".$_POST['directory-choice'];
+                $_SESSION['message']="Your file ".basename($_POST['url-file'])." is moved to ".$_POST['directory-choice'];
+            }else{
+                $_SESSION['error']="Another file with that name exists in the directory ".$_POST['directory-choice'].", so don't move";
+            }
+        }
+    }
+    $this->redirect('home');
+}
 }

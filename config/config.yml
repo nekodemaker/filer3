@@ -10,6 +10,7 @@ routes:
     rename: 'File:rename'
     replace: 'File:replace'
     download: 'File:download'
+    moveFile: 'File:moveFile'
     createNewFolder: 'Directory:createNewFolder'
     createDirectory: 'Directory:createDirectory'
     deleteDirectory: 'Directory:deleteDirectory'
