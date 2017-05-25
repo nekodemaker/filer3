@@ -18,6 +18,15 @@ class FileManager
         $this->DBManager = DBManager::getInstance();
     }
     
+    function update_url_file_move($newFileUrl,$oldFileUrl){
+    $q="update `file` set `file_url`= :fileurl where `user_id`= :userid and `file_url`= :oldfile";
+    $this->DBManager->do_query_db($q,[
+    'fileurl' => $newFileUrl,
+    'userid'=> $_SESSION['id'],
+    'oldfile'=> $oldFileUrl,
+    ]);
+}
+
     /*function called by controller upload_action, which uploads a file*/
     function user_upload($data,$fileName,$file_url){
         if(move_uploaded_file($data["monfichier"]["tmp_name"],$file_url)) {
@@ -91,63 +100,62 @@ class FileManager
         }else{
             return false;
         }
-        
-        /*function called by controller moveDirectory_action, which moves a  directory into another directory*/
-        function move_directory($directoryUrl,$directoryUrlDestination){
-            if(file_exists($directoryUrlDestination."/".basename($directoryUrl))){
+    }
+        /*function called by controller moveFile_action, which moves a file into another directory */
+        function move_file($fileUrl,$directoryUrlDestination){
+            if(file_exists($directoryUrlDestination."/".basename($fileUrl))){
                 return false;
             }else{
-                $this->rename_directory_rec($directoryUrl,$directoryUrlDestination."/".basename($directoryUrl));
-                rename($directoryUrl,$directoryUrlDestination."/".basename($directoryUrl));
+                $this->update_url_file_move($directoryUrlDestination."/".basename($fileUrl),$fileUrl);
+                rename($fileUrl,$directoryUrlDestination."/".basename($fileUrl));
                 return true;
             }
         }
+        
+        /*function called by controller openEditFile_action, which displays an edit zone for file text */
+        function open_edit_file($fileUrl){
+            if(file_exists($fileUrl)){
+                $_SESSION["open-file-edit"]=$fileUrl;
+                return true;
+            }else{
+                return false;
+            }
+        }
+        /*function called by controller editFile_action, which edits file text */
+        function edit_file($fileUrl,$fileContent){
+            if(file_put_contents($fileUrl,$fileContent)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        /*function called by controller visualizeFile_action, which visualize a certaint type of file */
+        function visualize_file($fileUrl){
+            $typeMime=explode('/',mime_content_type($fileUrl));
+            $bool=true;
+            switch ($typeMime[0]) {
+                case "text":
+                    $_SESSION["mime-file"]=[$fileUrl,"text"];
+                    break;
+                case "audio":
+                    $_SESSION["mime-file"]=[$fileUrl,"music"];
+                    break;
+                case "video":
+                    $_SESSION["mime-file"]=[$fileUrl,"video"];
+                    break;
+                case "image":
+                    $_SESSION["mime-file"]=[$fileUrl,"picture"];
+                    break;
+                case "application":
+                    $_SESSION["mime-file"]=[$fileUrl,"application"];
+                    break;
+                default:
+                    $bool=false;
+                    break;
+        }
+        return $bool;
     }
     
-/*function called by controller openEditFile_action, which displays an edit zone for file text */
-function open_edit_file($fileUrl){
-    if(file_exists($fileUrl)){
-        $_SESSION["open-file-edit"]=$fileUrl;
-        return true;
-    }else{
-        return false;
-    }
-}
-/*function called by controller editFile_action, which edits file text */
-function edit_file($fileUrl,$fileContent){
-    if(file_put_contents($fileUrl,$fileContent)){
-        return true;
-    }else{
-        return false;
-    }
-}
-/*function called by controller visualizeFile_action, which visualize a certaint type of file */
-function visualize_file($fileUrl){
-    $typeMime=explode('/',mime_content_type($fileUrl));
-    $bool=true;
-    switch ($typeMime[0]) {
-        case "text":
-            $_SESSION["mime-file"]=[$fileUrl,"text"];
-            break;
-        case "audio":
-            $_SESSION["mime-file"]=[$fileUrl,"music"];
-            break;
-        case "video":
-            $_SESSION["mime-file"]=[$fileUrl,"video"];
-            break;
-        case "image":
-            $_SESSION["mime-file"]=[$fileUrl,"picture"];
-            break;
-        case "application":
-            $_SESSION["mime-file"]=[$fileUrl,"application"];
-            break;
-        default:
-            $bool=false;
-            break;
-}
-return $bool;
-}
-
     /*function which returns all user files from id*/
     function get_all_files_by_id($id){
         $q="select * from `file` where `user_id`= :userid";
@@ -157,7 +165,7 @@ return $bool;
         return $result;
     }
     
-
+    
     function getAllFilesForDisplay($id){
         $type=["text","audio","video","image","application"];
         $allFiles=$this->get_all_files_by_id($id);
@@ -181,4 +189,4 @@ return $bool;
         }
         return $result;
     }
-}
+    }

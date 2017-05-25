@@ -36,20 +36,20 @@ class DefaultController extends BaseController
             if(!empty($_SESSION['mime-file'])){
                 $mimeFile=$_SESSION['mime-file'];
                 if($_SESSION['mime-file'][1]=="text"){
-                    $fileGetContentsOpenFileEdit=file_get_contents($_SESSION['mime-file'][0]);
+                    $fileGetContentsVisualize=file_get_contents($_SESSION['mime-file'][0]);
                 }
                 unset($_SESSION['mime-file']);
             }else{
                 $mimeFile="";
-                $fileGetContentsOpenFileEdit="";
+                $fileGetContentsVisualize="";
             }
             
             $fileManager = FileManager::getInstance();
             $directoryManager = DirectoryManager::getInstance();
             $allFiles=$fileManager->getAllFilesForDisplay($_SESSION['id']);
-            $allDirectories=$directoryManager->get_all_directories_by_id($_SESSION['id']);;
+            $allDirectories=$directoryManager->getAllDirectoriesForDisplay($_SESSION['id']);
             echo $this->renderView('home.html.twig',
-            ['id' => $_SESSION['id'],'username'=>$_SESSION['username'],'error'=>$error,'message'=>$message,'openFileEdit'=>$openFileEdit,'fileGetContentsOpenFileEdit'=>$fileGetContentsOpenFileEdit,'mimeFile'=>$mimeFile,'allFiles'=>$allFiles,'allDirectories'=>$allDirectories]);
+            ['id' => $_SESSION['id'],'username'=>$_SESSION['username'],'error'=>$error,'message'=>$message,'openFileEdit'=>$openFileEdit,'fileGetContentsOpenFileEdit'=>$fileGetContentsOpenFileEdit,'fileGetContentsVisualize'=>$fileGetContentsVisualize,'mimeFile'=>$mimeFile,'allFiles'=>$allFiles,'allDirectories'=>$allDirectories]);
         }
         else {
             echo $this->renderView('home.html.twig',
