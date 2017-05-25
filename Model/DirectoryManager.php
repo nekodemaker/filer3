@@ -100,6 +100,7 @@ class DirectoryManager
         $size=count($result);
         $sizeDirectoryUrl=strlen($directoryUrl);
         for ($i=0;$i<$size;$i++) {
+           
             if(strncmp($result[$i]['directory_url'],$directoryUrl,$sizeDirectoryUrl) != false){
                 $res[]=$result[$i];
             }
@@ -192,7 +193,7 @@ class DirectoryManager
         for($i=0;$i<count($allDirectories);$i++){
             $content=$this->get_directory_content($allDirectories[$i]['directory_url']);
             $moveDirectoryList=$this->get_all_directories_by_id_for_move_dir($id,$allDirectories[$i]['directory_url']);
-            
+
             $elem=array("directory"=>$allDirectories[$i],"content"=>$content,"list_move"=>$moveDirectoryList);
             array_push($result,$elem);
         }

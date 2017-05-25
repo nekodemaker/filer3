@@ -97,14 +97,15 @@ class DirectoryController extends BaseController
         $logManager = LogManager::getInstance();
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            if(!$logManager->test_path($_POST['url-directory'],$_SESSION['username'])||!$logManager->test_path($_POST['directory-choice'],$_SESSION['username'])){
+            var_dump($_POST);
+            if(!$logManager->test_path($_POST['url-directory'],$_SESSION['username'])||!$logManager->test_path($_POST['list-directories-dir'],$_SESSION['username'])){
                 $logManager->log_security($_SESSION['username'],"modified url directory by: ".$_POST['url-directory']);
-            }elseif(($logManager->test_special_char($_POST['url-directory'])==1)||($logManager->test_special_char($_POST['directory-choice'])==1)){
+            }elseif(($logManager->test_special_char($_POST['url-directory'])==1)||($logManager->test_special_char($_POST['list-directories-dir'])==1)){
                 $logManager->log_security($_SESSION['username'],"put dangerous characters on move directory action");
             }else{
-                if($directoryManager->move_directory($_POST['url-directory'],$_POST['directory-choice'])){
-                    $logManager->log_access($_SESSION['username']," moved directory ".$_POST['url-directory']." into ".$_POST['directory-choice']);
-                    $_SESSION['message']="Your Directory ".$_POST['url-directory']." is moved to ".$_POST['directory-choice'];
+                if($directoryManager->move_directory($_POST['url-directory'],$_POST['list-directories-dir'])){
+                    $logManager->log_access($_SESSION['username']," moved directory ".$_POST['url-directory']." into ".$_POST['list-directories-dir']);
+                    $_SESSION['message']="Your Directory ".$_POST['url-directory']." is moved to ".$_POST['list-directories-dir'];
                 }else{
                     $_SESSION['error']="the directory ".$_POST['url-directory']." already exists, don't move !";
                 }

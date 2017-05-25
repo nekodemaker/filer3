@@ -35,6 +35,7 @@ class DefaultController extends BaseController
             }
             if(!empty($_SESSION['mime-file'])){
                 $mimeFile=$_SESSION['mime-file'];
+                $fileGetContentsVisualize="";
                 if($_SESSION['mime-file'][1]=="text"){
                     $fileGetContentsVisualize=file_get_contents($_SESSION['mime-file'][0]);
                 }
@@ -48,6 +49,7 @@ class DefaultController extends BaseController
             $directoryManager = DirectoryManager::getInstance();
             $allFiles=$fileManager->getAllFilesForDisplay($_SESSION['id']);
             $allDirectories=$directoryManager->getAllDirectoriesForDisplay($_SESSION['id']);
+            
             echo $this->renderView('home.html.twig',
             ['id' => $_SESSION['id'],'username'=>$_SESSION['username'],'error'=>$error,'message'=>$message,'openFileEdit'=>$openFileEdit,'fileGetContentsOpenFileEdit'=>$fileGetContentsOpenFileEdit,'fileGetContentsVisualize'=>$fileGetContentsVisualize,'mimeFile'=>$mimeFile,'allFiles'=>$allFiles,'allDirectories'=>$allDirectories]);
         }
