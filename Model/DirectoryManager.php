@@ -1,5 +1,6 @@
 <?php
 namespace Model;
+
 class DirectoryManager
 {
     private $DBManager;
@@ -100,12 +101,29 @@ class DirectoryManager
         $size=count($result);
         $sizeDirectoryUrl=strlen($directoryUrl);
         for ($i=0;$i<$size;$i++) {
-           
+            
             if(strncmp($result[$i]['directory_url'],$directoryUrl,$sizeDirectoryUrl) != false){
                 $res[]=$result[$i];
             }
         }
         return $res;
+    }
+    
+    //function return the content as an array of directory
+    function get_directory_content($directoryUrl){
+        $cont=scandir($directoryUrl);
+        $result=[];
+        foreach($cont as $key => $value){
+            if($value !=="." && $value !==".."){
+                if(is_dir($directoryUrl."/".$value)){
+                    $elem=array("type"=>"dir","name"=>$value);
+                }else{
+                    $elem=array("type"=>"file","name"=>$value);
+                }
+                array_push($result,$elem);
+            }
+        }
+        return $result;
     }
     
     //FUNCTIONS CALLED BY CONTROLLERS
@@ -169,23 +187,7 @@ class DirectoryManager
         }
     }
     
-    /*function which returns an array of directory's content*/
-    function get_directory_content($directoryUrl){
-        $cont=scandir($directoryUrl);
-        $result=[];
-        foreach($cont as $key => $value){
-            if($value !=="." && $value !==".."){
-                if(is_dir($directoryUrl."/".$value)){
-                    $elem=array("type"=>"dir","name"=>$value);
-                }else{
-                    $elem=array("type"=>"file","name"=>$value);
-                }
-                array_push($result,$elem);
-            }
-        }
-        return $result;
-    }
-    
+    /*function which return array with necessary datas for display*/
     function getAllDirectoriesForDisplay($id){
         $allDirectories=$this->get_all_directories_by_id($id);
         $result=[];
@@ -193,7 +195,7 @@ class DirectoryManager
         for($i=0;$i<count($allDirectories);$i++){
             $content=$this->get_directory_content($allDirectories[$i]['directory_url']);
             $moveDirectoryList=$this->get_all_directories_by_id_for_move_dir($id,$allDirectories[$i]['directory_url']);
-
+            
             $elem=array("directory"=>$allDirectories[$i],"content"=>$content,"list_move"=>$moveDirectoryList);
             array_push($result,$elem);
         }

@@ -2,35 +2,36 @@
 
 {% block content %}
     <div id="body-website">
-      {% if username is empty %}
-      {# HOME USER NOT CONNECTED #}
-      <p>Welcome here ! Its a Filer website V3</p>
-      <p>You can upload files, rename, replace, delete, move and download</p>
-      <p>You can create directories, rename, move, delete</p>
-      {% else %}
+    {% if username is empty %}
+        {# HOME USER NOT CONNECTED #}
+        <p>Welcome here ! Its a Filer website V3</p>
+        <p>You can upload files, rename, replace, delete, move and download</p>
+        <p>You can create directories, rename, move, delete</p>
+    {% else %}
         {# HOME USER CONNECTED #}
         <p class="welcome-para">
             Welcome {{username}}
         </p>
-      <div id="warning-block">
+        <div id="warning-block">
         {% if error is defined and not empty%}
-           <p>{{error}}</p>
-           {% set error="" %}
+            <p>{{error}}</p>
+            {% set error="" %}
         {% endif %}
-      </div>
-      <div id="message">
+        </div>
+        <div id="message">
         {% if message is defined and not empty%}
-           <p>{{message}}</p>
-           {% set message="" %}
+            <p>{{message}}</p>
+            {% set message="" %}
         {% endif %}
-      </div>
-      <form id="form-upload" method="post" enctype="multipart/form-data" action="?action=upload">
-        <input type="hidden" name="MAX_FILE_SIZE" value="1000000000" /> Choose a file to upload, you can upload a same file name with a different extension
-        <input type="file" id="myFile" name="monfichier" />
-        <input type="submit" class="bof" value="upload" />
-      </form>
-      <div id="edit-block">
-        {#<?php edit_appear();?>#}
+        </div>
+        {# TO upload a file #}
+        <form id="form-upload" method="post" enctype="multipart/form-data" action="?action=upload">
+            <input type="hidden" name="MAX_FILE_SIZE" value="1000000000" /> Choose a file to upload, you can upload a same file name with a different extension
+            <input type="file" id="myFile" name="monfichier" />
+            <input type="submit" class="bof" value="upload" />
+        </form>
+        {# the modal for edit the text #}
+        <div id="edit-block">
         {% if openFileEdit is not empty %}
             <div id='myModal' class='modal'>
                 <div class='modal-content'>
@@ -43,56 +44,64 @@
                 </div>
             </div>
         {% endif %}
-        {#<?php visualize_appear();?>#}
-          {% if mimeFile[1] == 'text' %}
-              <div id='myModal' class='modal'>
-              <div class='modal-content'>
-              <span class='close'>&times;</span>
-              <textarea name='file-content'>{{fileGetContentsVisualize}}</textarea>
-              </div></div>
+        {# test the type mime of file, and display on modal #}
+        {% if mimeFile[1] == 'text' %}
+            <div id='myModal' class='modal'>
+                <div class='modal-content'>
+                    <span class='close'>&times;</span>
+                    <textarea name='file-content'>{{fileGetContentsVisualize}}</textarea>
+                </div>
+            </div>
           {% endif %}
           {% if mimeFile[1] == 'video' %}
-              <div id='myModal' class='modal'>
-              <div class='modal-content'>
-              <span class='close'>&times;</span>
-              <video width="320" height="240" src={{mimeFile[0]}} controls>
-              </video>
-              </div></div>
+            <div id='myModal' class='modal'>
+                <div class='modal-content'>
+                    <span class='close'>&times;</span>
+                    <video width="320" height="240" src={{mimeFile[0]}} controls>
+                    </video>
+                </div>
+            </div>
           {% endif %}
           {% if mimeFile[1] == 'music' %}
               <div id='myModal' class='modal'>
-              <div class='modal-content'>
-              <span class='close'>&times;</span>
-              <audio src={{mimeFile[0]}} controls>
-              </audio>
-              </div></div>
+                <div class='modal-content'>
+                    <span class='close'>&times;</span>
+                    <audio src={{mimeFile[0]}} controls>
+                    </audio>
+                </div>
+            </div>
           {% endif %}
           {% if mimeFile[1] == 'picture' %}
               <div id='myModal' class='modal'>
-              <div class='modal-content'>
-              <span class='close'>&times;</span>
-              <img src={{mimeFile[0]}}>
-              </div></div>
+                <div class='modal-content'>
+                    <span class='close'>&times;</span>
+                    <img src={{mimeFile[0]}}>
+                </div>
+            </div>
           {% endif %}
           {% if mimeFile[1] == 'application' %}
               <div id='myModal' class='modal'>
-              <div class='modal-content'>
-              <span class='close'>&times;</span>
-              <embed src={{mimeFile[0]}}>
-              </div></div>
+                <div class='modal-content'>
+                    <span class='close'>&times;</span>
+                    <embed src={{mimeFile[0]}}>
+                </div>
+            </div>
           {% endif %}
       </div>
+      {# to create a directory #}
       <form method="post" action="?action=createNewFolder">
         <label for="new-d">Create a new directory</label>
         <input type="text" id="new-d" name="new_directory" />
         <input type="submit" class="bof" value="Create new directory" />
       </form>
-          {% for file in allFiles %}
+    {# display all the files which are on personal user directory #}
+    {% for file in allFiles %}
       {% if file['file']['directory'] == "./uploads/"~username  %}
           <div class="file-block">
               <div class="file-name">{{file['file']['file_name']}}</div>
               <div class="file-url">{{file['file']['file_url']}}</div>
               <div class="file-date-creation">{{file['file']['date_creation']}}</div>
+              {# BUTTONS rename,delete,replace,download,move and eventually edit and visualize #}
               <div class="buttons"><div class="rename-block"><input type="button" class="rename-file" value="Rename File"></div>
                   <form method="post" action="?action=delete">
                       <input type="hidden" name="file-url" value={{file['file']['file_url']}}>
@@ -112,14 +121,12 @@
                       </select>
                   </div>
                   <div class="move-file-block"><input type="button" class="move-file" value="Move File"></div>
-                  {#put_button_edit($row['file_url']);#}
                   {% if file['edit'] == true %}
                       <form method="post" action="?action=openEditFile">
                           <input type="hidden" name="file-url-edit" value={{file['file']['file_url']}}>
                           <input type="submit" class="edit-file" value="Edit File">
                       </form>
                   {% endif %}
-                  {#put_button_visualize($row['file_url']);#}
                   {% if file['visualization'] == true %}
                       <form method="post" action="?action=visualizeFile">
                           <input type="hidden" name="file-url-visualize" value={{file['file']['file_url']}}>
@@ -127,13 +134,13 @@
                       </form>
                   {% endif %}
               </div>
+              {# end BUTTONS #}
           </div>
       {% endif %}
           {% endfor %}
       <div id="user-directories-list">
-          {#<?php display_all_user_directories();?>#}
           <div class="block-name">
-              <p>Directory name</p><p>URL</p><p>Directory content</p><p>Actions</p>
+              <p>Directory name</p><p>URL</p><p>Actions</p>
           </div>
           {% for directory in allDirectories %}
           <div class="directory-block">
@@ -147,7 +154,6 @@
                 <input type="submit" name="delete-directory" value="Delete Directory">
               </form>
               <div hidden class="list-directories-dir">
-                {#'.multiple_choice_list_html("d",$row['directory_url']).'#}
                  <select name="list-directories-dir">
                  {% for dir_move in directory['list_move'] %}
                       <option>{{dir_move['directory_url']}}</option>
@@ -160,7 +166,6 @@
             </div>
           </div>
           <div class="directory-content">
-              {#'.get_directory_content($row['directory_url']).'#}
                       {% for file in allFiles %}
                           {% if file['file']['directory'] == directory['directory']['directory_url'] %}
                           <div class="file-block">
@@ -186,14 +191,12 @@
                                       </select>
                                   </div>
                                   <div class="move-file-block"><input type="button" class="move-file" value="Move File"></div>
-                                  {#put_button_edit($row['file_url']);#}
                                   {% if file['edit'] == true %}
                                       <form method="post" action="?action=openEditFile">
                                           <input type="hidden" name="file-url-edit" value={{file['file']['file_url']}}>
                                           <input type="submit" class="edit-file" value="Edit File">
                                       </form>
                                   {% endif %}
-                                  {#put_button_visualize($row['file_url']);#}
                                   {% if file['visualization'] == true %}
                                       <form method="post" action="?action=visualizeFile">
                                           <input type="hidden" name="file-url-visualize" value={{file['file']['file_url']}}>
