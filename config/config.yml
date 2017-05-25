@@ -22,7 +22,7 @@ routes:
 
 defaut_route: 'home'
 db_config:
-    name: 'filer'
+    name: 'filer3'
     host: 'localhost'
     user: 'root'
     pass: ''

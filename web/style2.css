@@ -99,6 +99,7 @@ fieldset{
 }
 
 .file-block{
+    margin-left: 10%;
     display: flex;
     margin-bottom: 20px;
     justify-content: space-between;
@@ -135,9 +136,6 @@ fieldset{
 }
 
 .directory-content{
-max-height: 8vw;
-max-width: 30vw;
-overflow: scroll;
 border: 1px solid rebeccapurple;
 }
 

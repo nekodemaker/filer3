@@ -176,6 +176,8 @@ class FileManager
             $fileExtension=pathinfo($fileName,PATHINFO_EXTENSION);
             $fileMime=mime_content_type($allFiles[$i]['file_url']);
             $fileType=explode('/',$fileMime);
+            $fileDirectory= str_replace("/".$fileName, "", $allFiles[$i]['file_url']);
+            $allFiles[$i]['directory'] = $fileDirectory;
             $visualization=false;
             $edit=false;
             if(in_array($fileType[0],$type)){
