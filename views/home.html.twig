@@ -31,6 +31,18 @@
       </form>
       <div id="edit-block">
         {#<?php edit_appear();?>#}
+        {% if openFileEdit is not empty %}
+            <div id='myModal' class='modal'>
+                <div class='modal-content'>
+                    <span class='close'>&times;</span>
+                    <form method='post'  action='?action=editFile'>
+                        <input type='hidden' name='url-file' value={{openFileEdit}}>
+                        <textarea name='file-content'>{{fileGetContentsOpenFileEdit}}</textarea>
+                        <input type="submit" id="edit-ok" value="ok Edit File">
+                    </form>
+                </div>
+            </div>
+        {% endif %}
         {#<?php visualize_appear();?>#}
       </div>
       <div id="user-files-list">
