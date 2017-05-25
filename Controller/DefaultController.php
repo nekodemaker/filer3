@@ -35,9 +35,13 @@ class DefaultController extends BaseController
             }
             if(!empty($_SESSION['mime-file'])){
                 $mimeFile=$_SESSION['mime-file'];
+                if($_SESSION['mime-file'][1]=="text"){
+                    $fileGetContentsOpenFileEdit=file_get_contents($_SESSION['mime-file'][0]);
+                }
                 unset($_SESSION['mime-file']);
             }else{
                 $mimeFile="";
+                $fileGetContentsOpenFileEdit="";
             }
             
             $fileManager = FileManager::getInstance();

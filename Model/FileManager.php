@@ -176,7 +176,7 @@ return $bool;
             if($fileExtension=="txt"){
                 $edit=true;
             }
-            $elem=array("file"=>$allFiles[$i],"extension"=>$fileExtension,"mime"=>$fileType[0],"visulalization"=>$visualization,"edit"=>$edit);
+            $elem=array("file"=>$allFiles[$i],"extension"=>$fileExtension,"mime"=>$fileType[0],"visualization"=>$visualization,"edit"=>$edit);
             array_push($result,$elem);
         }
         return $result;

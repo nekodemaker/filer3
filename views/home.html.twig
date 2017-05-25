@@ -44,9 +44,43 @@
             </div>
         {% endif %}
         {#<?php visualize_appear();?>#}
-        {% if openFileEdit is not empty %}
-          {#test in function of mime#}
-        {% endif %}
+          {% if mimeFile[1] == 'text' %}
+              <div id='myModal' class='modal'>
+              <div class='modal-content'>
+              <span class='close'>&times;</span>
+              <textarea name='file-content'>{{fileGetContentsOpenFileEdit}}</textarea>
+              </div></div>
+          {% endif %}
+          {% if mimeFile[1] == 'video' %}
+              <div id='myModal' class='modal'>
+              <div class='modal-content'>
+              <span class='close'>&times;</span>
+              <video width="320" height="240" src={{mimeFile[0]}} controls>
+              </video>
+              </div></div>
+          {% endif %}
+          {% if mimeFile[1] == 'music' %}
+              <div id='myModal' class='modal'>
+              <div class='modal-content'>
+              <span class='close'>&times;</span>
+              <audio src={{mimeFile[0]}} controls>
+              </audio>
+              </div></div>
+          {% endif %}
+          {% if mimeFile[1] == 'picture' %}
+              <div id='myModal' class='modal'>
+              <div class='modal-content'>
+              <span class='close'>&times;</span>
+              <img src={{mimeFile[0]}}>
+              </div></div>
+          {% endif %}
+          {% if mimeFile[1] == 'application' %}
+              <div id='myModal' class='modal'>
+              <div class='modal-content'>
+              <span class='close'>&times;</span>
+              <embed src={{mimeFile[0]}}>
+              </div></div>
+          {% endif %}
       </div>
       <div id="user-files-list">
         {#<?php display_all_user_files();?>#}
