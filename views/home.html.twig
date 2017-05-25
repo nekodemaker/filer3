@@ -44,6 +44,9 @@
             </div>
         {% endif %}
         {#<?php visualize_appear();?>#}
+        {% if openFileEdit is not empty %}
+          {#test in function of mime#}
+        {% endif %}
       </div>
       <div id="user-files-list">
         {#<?php display_all_user_files();?>#}
@@ -81,6 +84,12 @@
                   </form>
               {% endif %}
               {#put_button_visualize($row['file_url']);#}
+              {% if file['visualization'] == true %}
+                  <form method="post" action="?action=visualizeFile">
+                      <input type="hidden" name="file-url-visualize" value={{file['file']['file_url']}}>
+                      <input type="submit" class="visualize-file" value="Visualize File">
+                  </form>
+              {% endif %}
               </div></div>
           {% endfor %}
       </div>

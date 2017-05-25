@@ -12,6 +12,8 @@ routes:
     download: 'File:download'
     moveFile: 'File:moveFile'
     openEditFile: 'File:openEditFile'
+    editFile: 'File:editFile'
+    visualizeFile: 'File:visualizeFile'
     createNewFolder: 'Directory:createNewFolder'
     createDirectory: 'Directory:createDirectory'
     deleteDirectory: 'Directory:deleteDirectory'

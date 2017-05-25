@@ -33,12 +33,19 @@ class DefaultController extends BaseController
                 $openFileEdit="";
                 $fileGetContentsOpenFileEdit="";
             }
+            if(!empty($_SESSION['mime-file'])){
+                $mimeFile=$_SESSION['mime-file'];
+                unset($_SESSION['mime-file']);
+            }else{
+                $mimeFile="";
+            }
+            
             $fileManager = FileManager::getInstance();
             $directoryManager = DirectoryManager::getInstance();
             $allFiles=$fileManager->getAllFilesForDisplay($_SESSION['id']);
             $allDirectories=$directoryManager->get_all_directories_by_id($_SESSION['id']);;
             echo $this->renderView('home.html.twig',
-            ['id' => $_SESSION['id'],'username'=>$_SESSION['username'],'error'=>$error,'message'=>$message,'openFileEdit'=>$openFileEdit,'fileGetContentsOpenFileEdit'=>$fileGetContentsOpenFileEdit,'allFiles'=>$allFiles,'allDirectories'=>$allDirectories]);
+            ['id' => $_SESSION['id'],'username'=>$_SESSION['username'],'error'=>$error,'message'=>$message,'openFileEdit'=>$openFileEdit,'fileGetContentsOpenFileEdit'=>$fileGetContentsOpenFileEdit,'mimeFile'=>$mimeFile,'allFiles'=>$allFiles,'allDirectories'=>$allDirectories]);
         }
         else {
             echo $this->renderView('home.html.twig',
