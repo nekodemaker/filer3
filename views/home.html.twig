@@ -39,23 +39,35 @@
           <p>File name</p><p>Url</p><p>Date of creation</p><p>Actions</p></div>
           {% for file in allFiles %}
             <div class="file-block">
-              <div class="file-name">{{file['file_name']}}</div>
-              <div class="file-url">{{file['file_url']}}</div>
-              <div class="file-date-creation">{{file['date_creation']}}</div>
+              <div class="file-name">{{file['file']['file_name']}}</div>
+              <div class="file-url">{{file['file']['file_url']}}</div>
+              <div class="file-date-creation">{{file['file']['date_creation']}}</div>
               <div class="buttons"><div class="rename-block"><input type="button" class="rename-file" value="Rename File"></div>
               <form method="post" action="?action=delete">
-                  <input type="hidden" name="file-url" value={{file['file_url']}}>
+                  <input type="hidden" name="file-url" value={{file['file']['file_url']}}>
                   <input type="submit" name="delete-file" value="Delete File">'
               </form>
               <div class="replace-block"><input type="button" class="replace-file" value="Replace File"></div>
               <form method="post" action="?action=download">
-                  <input type="hidden" name="url-file" value={{file['file_url']}}>
+                  <input type="hidden" name="url-file" value={{file['file']['file_url']}}>
                   <input type="hidden" name="name-user" value={{username}}>
                   <input type="submit" name="download-file" value="Download File">
               </form>
-              <div hidden class="list-directories">{#'.multiple_choice_list_html("f","").'#}</div>
+              <div hidden class="list-directories">
+                  <select name="directory-choice">
+                  {% for directory in allDirectories %}
+                      <option>{{directory['directory_url']}}</option>
+                  {% endfor %}
+                  </select>
+              </div>
               <div class="move-file-block"><input type="button" class="move-file" value="Move File"></div>
               {#put_button_edit($row['file_url']);#}
+              {% if file['edit'] == true %}
+                  <form method="post" action="?action=openEditFile">
+                      <input type="hidden" name="file-url-edit" value={{file['file']['file_url']}}>
+                      <input type="submit" class="edit-file" value="Edit File">
+                  </form>
+              {% endif %}
               {#put_button_visualize($row['file_url']);#}
               </div></div>
           {% endfor %}

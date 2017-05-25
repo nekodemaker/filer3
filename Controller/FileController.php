@@ -132,26 +132,87 @@ class FileController extends BaseController
         }
         $this->redirect('home');
     }
-
+    
     function moveFileAction(){
-    if ($_SERVER['REQUEST_METHOD'] === 'POST')
-    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
             $fileManager = FileManager::getInstance();
             $logManager = LogManager::getInstance();
-        if(!$logManager->test_path($_POST['url-file'],$_SESSION['username'])||!$logManager->test_path($_POST['directory-choice'],$_SESSION['username'])){
-            $logManager->log_security($_SESSION['username'],"modified url file by: ".$_POST['url-file']);
-        }elseif(($logManager->test_special_char($_POST['url-file'])==1)||($logManager->test_special_char($_POST['directory-choice'])==1)){
-            $logManager->log_security($_SESSION['username'],"put dangerous characters on move file action");
-        }else{
-            if($fileManager->move_file($_POST['url-file'],$_POST['directory-choice'])){
-                $logManager->log_access($_SESSION['username'],"moved file ".$_POST['url-file']." into ".$_POST['directory-choice']);
-                $_SESSION['message']="Your file is".$_POST['url-file']." and directory ".$_POST['directory-choice'];
-                $_SESSION['message']="Your file ".basename($_POST['url-file'])." is moved to ".$_POST['directory-choice'];
+            if(!$logManager->test_path($_POST['url-file'],$_SESSION['username'])||!$logManager->test_path($_POST['directory-choice'],$_SESSION['username'])){
+                $logManager->log_security($_SESSION['username'],"modified url file by: ".$_POST['url-file']);
+            }elseif(($logManager->test_special_char($_POST['url-file'])==1)||($logManager->test_special_char($_POST['directory-choice'])==1)){
+                $logManager->log_security($_SESSION['username'],"put dangerous characters on move file action");
             }else{
-                $_SESSION['error']="Another file with that name exists in the directory ".$_POST['directory-choice'].", so don't move";
+                if($fileManager->move_file($_POST['url-file'],$_POST['directory-choice'])){
+                    $logManager->log_access($_SESSION['username'],"moved file ".$_POST['url-file']." into ".$_POST['directory-choice']);
+                    $_SESSION['message']="Your file is".$_POST['url-file']." and directory ".$_POST['directory-choice'];
+                    $_SESSION['message']="Your file ".basename($_POST['url-file'])." is moved to ".$_POST['directory-choice'];
+                }else{
+                    $_SESSION['error']="Another file with that name exists in the directory ".$_POST['directory-choice'].", so don't move";
+                }
             }
         }
+        $this->redirect('home');
     }
-    $this->redirect('home');
-}
+    
+    function openEditFileAction(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+            $fileManager = FileManager::getInstance();
+            $logManager = LogManager::getInstance();
+            if(!$logManager->test_path($_POST['file-url-edit'],$_SESSION['username'])){
+                $logManager->log_security($_SESSION['username'],"modified url file on openEditFile by: ".$_POST['file-url-edit']);
+            }else if(($logManager->test_special_char($_POST['url-file'])==1)||($logManager->test_special_char($_POST['file-url-edit'])==1)){
+                $logManager->log_security($_SESSION['username'],"put dangerous characters on open edit file action");
+            }else{
+                if($fileManager->open_edit_file($_POST['file-url-edit'])){
+                    $_SESSION['message']="Please edit your file".basename($_POST['file-url-edit']);
+                }else{
+                    $_SESSION['error']="Problem, the file you want to edit doesn't exist";
+                }
+            }
+        }
+        $this->redirect('home');
+    }
+    
+    function editFileAction(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+            $fileManager = FileManager::getInstance();
+            $logManager = LogManager::getInstance();
+            if(!$logManager->test_path($_POST['url-file'],$_SESSION['username'])){
+                $logManager->log_security($_SESSION['username'],"modified url file on editFile by: ".$_POST['url-file']);
+            }elseif($logManager->test_special_char($_POST['url-file'])==1){
+                $logManager->log_security($_SESSION['username'],"put dangerous characters on edit file action");
+            }else{
+                if($fileManager->edit_file($_POST['url-file'],$_POST['file-content'])){
+                    $logManager->log_access($_SESSION['username'],"edited text file ".$_POST['url-file']);
+                    $_SESSION['message']="Your file ".$_POST['url-file']." is edited";
+                }else{
+                    $_SESSION['error']="Problem, your file ".$_POST['url-file']." can't be edited";
+                }
+            }
+        }
+        $this->redirect('home');
+    }
+    
+    function visualizeFileAction(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+            $fileManager = FileManager::getInstance();
+            $logManager = LogManager::getInstance();
+            if(!$logManager->test_path($_POST['file-url-visualize'],$_SESSION['username'])){
+                $logManager->log_security($_SESSION['username'],"modified url file by: ".$_POST['url-file']);
+            }elseif($logManager->test_special_char($_POST['file-url-visualize'])==1){
+                $logManager->log_security($_SESSION['username'],"put dangerous characters on visualize file action");
+            }else{
+                if($fileManager->visualize_file($_POST['file-url-visualize'])){
+                    $_SESSION['message']="Your file ".basename($_POST['file-url-visualize'])." is visualized";
+                }else{
+                    $_SESSION['error']="Problem, your file ".basename($_POST['file-url-visualize'])." can't be visualized";
+                }
+            }
+        }
+        $this->redirect('home');
+    }
 }

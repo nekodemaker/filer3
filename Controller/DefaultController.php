@@ -27,7 +27,7 @@ class DefaultController extends BaseController
             }
             $fileManager = FileManager::getInstance();
             $directoryManager = DirectoryManager::getInstance();
-            $allFiles=$fileManager->get_all_files_by_id($_SESSION['id']);
+            $allFiles=$fileManager->getAllFilesForDisplay($_SESSION['id']);
             $allDirectories=$directoryManager->get_all_directories_by_id($_SESSION['id']);;
             echo $this->renderView('home.html.twig',
             ['id' => $_SESSION['id'],'username'=>$_SESSION['username'],'error'=>$error,'message'=>$message,'allFiles'=>$allFiles,'allDirectories'=>$allDirectories]);

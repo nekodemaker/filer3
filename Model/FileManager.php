@@ -104,18 +104,81 @@ class FileManager
         }
     }
     
-    
-    
-    
-    
-    
-    
+/*function called by controller openEditFile_action, which displays an edit zone for file text */
+function open_edit_file($fileUrl){
+    if(file_exists($fileUrl)){
+        $_SESSION["open-file-edit"]=$fileUrl;
+        return true;
+    }else{
+        return false;
+    }
+}
+/*function called by controller editFile_action, which edits file text */
+function edit_file($fileUrl,$fileContent){
+    if(file_put_contents($fileUrl,$fileContent)){
+        return true;
+    }else{
+        return false;
+    }
+}
+/*function called by controller visualizeFile_action, which visualize a certaint type of file */
+function visualize_file($fileUrl){
+    $typeMime=explode('/',mime_content_type($fileUrl));
+    $bool=true;
+    switch ($typeMime[0]) {
+        case "text":
+            $_SESSION["mime-file"]=[$fileUrl,"text"];
+            break;
+        case "audio":
+            $_SESSION["mime-file"]=[$fileUrl,"music"];
+            break;
+        case "video":
+            $_SESSION["mime-file"]=[$fileUrl,"video"];
+            break;
+        case "image":
+            $_SESSION["mime-file"]=[$fileUrl,"picture"];
+            break;
+        case "application":
+            $_SESSION["mime-file"]=[$fileUrl,"application"];
+            break;
+        default:
+            $bool=false;
+            break;
+}
+return $bool;
+}
+
     /*function which returns all user files from id*/
     function get_all_files_by_id($id){
         $q="select * from `file` where `user_id`= :userid";
         $result=$this->DBManager->findAllSecure($q,[
         'userid'=> $id,
         ]);
+        return $result;
+    }
+    
+
+    function getAllFilesForDisplay($id){
+        $type=["text","audio","video","image","application"];
+        $allFiles=$this->get_all_files_by_id($id);
+        $result=[];
+        
+        for($i=0;$i<count($allFiles);$i++){
+            $fileName=basename($allFiles[$i]['file_url']);
+            $fileExtension=pathinfo($fileName,PATHINFO_EXTENSION);
+            $fileMime=mime_content_type($allFiles[$i]['file_url']);
+            $fileType=explode('/',$fileMime);
+            $visualization=false;
+            $edit=false;
+            if(in_array($fileType[0],$type)){
+                $visualization=true;
+            }
+            if($fileExtension=="txt"){
+                $edit=true;
+            }
+            $elem=array("file"=>$allFiles[$i],"extension"=>$fileExtension,"mime"=>$fileType[0],"visulalization"=>$visualization,"edit"=>$edit);
+            array_push($result,$elem);
+        }
         return $result;
     }
 }

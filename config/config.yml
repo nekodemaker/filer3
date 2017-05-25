@@ -11,6 +11,7 @@ routes:
     replace: 'File:replace'
     download: 'File:download'
     moveFile: 'File:moveFile'
+    openEditFile: 'File:openEditFile'
     createNewFolder: 'Directory:createNewFolder'
     createDirectory: 'Directory:createDirectory'
     deleteDirectory: 'Directory:deleteDirectory'
