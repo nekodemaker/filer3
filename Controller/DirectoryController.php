@@ -97,7 +97,6 @@ class DirectoryController extends BaseController
         $logManager = LogManager::getInstance();
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            var_dump($_POST);
             if(!$logManager->test_path($_POST['url-directory'],$_SESSION['username'])||!$logManager->test_path($_POST['list-directories-dir'],$_SESSION['username'])){
                 $logManager->log_security($_SESSION['username'],"modified url directory by: ".$_POST['url-directory']);
             }elseif(($logManager->test_special_char($_POST['url-directory'])==1)||($logManager->test_special_char($_POST['list-directories-dir'])==1)){
